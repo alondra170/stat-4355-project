@@ -1,7 +1,14 @@
 # stat-4351-project
+## team name 
+The Applied Linear Modelers
+
+## dataset
+Courtney's 100 Spotify Top Songs 2020 (Created by Spotify)
+This dataset has
 
 ## variable descriptions 
 pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
+
 Variable Name | Type | Description
 --- | --- | --- 
 title | string | song title
