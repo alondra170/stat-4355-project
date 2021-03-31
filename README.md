@@ -1,6 +1,7 @@
 # stat-4351-project
 
-## variable descriptions
+## variable descriptions 
+pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
 Variable Name | Type | Description
 --- | --- | --- 
 title | string | song title
