@@ -1,12 +1,15 @@
 # stat-4351-project
-## team name 
+## team name, members and responsibilities
 The Applied Linear Modelers
+Alondra Ramos | introduction of scientific question, future direction, report and presentation organization
+Ajay Palankar | regression modeling (statistics heavy)
+Courtney Schaller | data visualization (figures and tables)
 
 ## dataset
-Courtney's 100 Spotify Top Songs 2020 (Created by Spotify)
-This dataset has 15 classes and 100 instances
+Courtney's 100 Spotify Top Songs 2020 Playlist (Created by Spotify)
+This dataset has 15 classes and 100 instances. The Spotify API has several features of every song on the platform. The dataset is available at https://github.com/alondra170/stat-4351-project/blob/main/Courtney's%20Spotify%20Top%20Songs%202020.
 
-## variable descriptions 
+### variable descriptions 
 pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
 
 Variable Name | Type | Description
@@ -26,3 +29,7 @@ dur | int | duration of track in seconds
 acous | numeric | A confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
 spch | numeric | Speechiness detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. Values above 0.66 describe tracks that are probably made entirely of spoken words. Values between 0.33 and 0.66 describe tracks that may contain both music and speech, either in sections or layered, including such cases as rap music. Values below 0.33 most likely represent music and other non-speech-like tracks.
 pop | numeric | The popularity of a track is a value between 0 and 100, with 100 being the most popular. The popularity is calculated by algorithm and is based, in the most part, on the total number of plays the track has had and how recent those plays are. Generally speaking, songs that are being played a lot now will have a higher popularity than songs that were played a lot in the past.
+
+### response and predictor variables
+
+## data analysis plan
