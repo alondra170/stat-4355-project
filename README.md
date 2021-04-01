@@ -32,7 +32,7 @@ pop | numeric | The popularity of a track is a value between 0 and 100, with 100
 
 ### response and predictor variables
 
-Response Variable: Popularity (int)
+Response Variable: pop (int)
 
 Predictor Variables:
   
