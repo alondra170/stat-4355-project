@@ -1,4 +1,4 @@
-# stat-4351-project
+# stat-4355-project
 ## team name, members and responsibilities
 The Applied Linear Modelers
 Alondra Ramos | introduction of scientific question, future direction, report and presentation organization
