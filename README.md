@@ -11,6 +11,8 @@ Courtney Schaller | data visualization (figures and tables)
 Courtney's 100 Spotify Top Songs 2020 Playlist (Created by Spotify)
 This dataset has 15 classes and 100 instances. The Spotify API has several features of every song on the platform. The dataset is available at https://github.com/alondra170/stat-4351-project/blob/main/Courtney's%20Spotify%20Top%20Songs%202020.
 
+## data description
+
 ### variable descriptions 
 pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
 
@@ -38,9 +40,10 @@ Response Variable: pop (numeric)
 
 Predictor Variables:
   
+    year added (int)
     bmp (numeric)
     nrgy (numeric)
-    danceabilit(numeric)
+    danceability(numeric)
     dB (numeric)
     live (numeric)
     valence (numeric)
