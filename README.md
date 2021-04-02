@@ -8,7 +8,7 @@ Ajay Palankar | regression modeling (statistics heavy)
 Courtney Schaller | data visualization (figures and tables)
 
 ## dataset
- Rolling Stone's best albums of all time on Spotify from the year 2020 (Created by Spotify)
+Rolling Stone's best albums of all time on Spotify from the year 2020 (Created by Spotify) 
 This dataset has 15 classes and 6000 instances. The Spotify API has several features of every song on the platform. The dataset is available at https://github.com/alondra170/stat-4351-project/blob/main/Courtney's%20Spotify%20Top%20Songs%202020.
 
 ## data description
