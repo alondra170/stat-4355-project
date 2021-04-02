@@ -54,6 +54,10 @@ Predictor Variables:
 
 ## Analysis Goal
 
-Our goal for this study is to determine how various predictor variables of a song such as year added, bmp, nrg, and danceability impacts the popularity of a song. Specifically, to determine how each individual predictor variable can either increase popularity or decrease popularity.  
+Our goal for this study is to determine how various predictor variables of a song such as year added, bmp, nrg, and danceability impacts the popularity of a song. Specifically, to determine how each individual predictor variable can either increase popularity or decrease popularity. 
 
 ## data analysis plan
+
+Data exploration and cleaning will be implemented by extracting the chosen predictor variables, handling null values, as well as exploring the data through plots and looking at summary statistics to ensure the distribution of our predictor variable is balanced and appropriate to create a useful model. We will also be investigated the predictors and weeding out any instances of colinearity among them to ensure the model creation is giving meaningful insight to regressor significance. 
+
+The next phase consists of model construction with the linear regression functions provided in R. The first model will consist of alll of the listed predictors post-cleaning. From there numerous metrics and figures such as RSE, R^2, p-values, error plots and others will be examined for fit and appropriateness with implications and conclusions documented accordingly. Experimentation with different forms of the model will be executed after considering the significance of each regressor and other factors. This will repeated until sufficient and satisfactory insights into the data are achieved. Figures and tables will be constructed to summarize and visualize results and a future direction will be decided accordingly.
