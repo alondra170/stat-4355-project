@@ -12,6 +12,7 @@ Courtney's 100 Spotify Top Songs 2020 Playlist (Created by Spotify)
 This dataset has 15 classes and 100 instances. The Spotify API has several features of every song on the platform. The dataset is available at https://github.com/alondra170/stat-4351-project/blob/main/Courtney's%20Spotify%20Top%20Songs%202020.
 
 ## data description
+For our project, we chose to analyze a Spotify dataset, specifically a list of Rolling Stone's best albums of all time on Spotify from the year 2020. This dataset took all the songs from Rolling Stone's best albums list and compiled it into a big playlist, which could then be converted into a dataset available for study. In particular, the dataset involves an array of multiple numerical and categorical variables which help the user understand multiple components of the song. Such components include whether the song was created in front of a live audience, how popular the song is, as well as a measure of the song's positivity in addition to many other factors. In regards to how the data is structured, the songs are categorized by song title, artist name, genre, pop (popularity), along with other variables. Most importantly, our group will focus on how popularity of a song is impacted due to variables such as the danceability, nrgy, live, valence, and dur variables. Moreoever, we chose to focus on the popularity of a song as our goal of study because we believe studying popularity will allow for audiences to have a clear understanding of what makes a song popular. In addition, studying popularity we feel can allow for our group to gain insight into clear, yet detailed understanding of the mathematical and statistical relationships between the variables of the Spotify dataset.
 
 ### variable descriptions 
 pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
@@ -50,5 +51,9 @@ Predictor Variables:
     dur (numeric)
     acous (numeric)
     spch (numeric)
+
+## Analysis Goal
+
+Our goal for this study is to determine how various predictor variables of a song such as year added, bmp, nrg, and danceability impacts the popularity of a song. Specifically, to determine how each individual predictor variable can either increase popularity or decrease popularity.  
 
 ## data analysis plan
