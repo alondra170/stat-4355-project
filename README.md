@@ -51,7 +51,7 @@ Predictor Variables:
     acous (numeric)
     spch (numeric)
 
-## Analysis Goal
+## analysis goal
 
 Our goal for this study is to determine how various predictor variables of a song such as year added, bmp, nrg, and danceability impacts the popularity of a song. Specifically, to determine whether each individual predictor variable affects popularity, and if so, to what degree it increases or decreases it.
 
