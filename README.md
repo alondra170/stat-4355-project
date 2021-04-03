@@ -18,7 +18,7 @@ For our project, we chose to analyze a Spotify dataset, specifically a list of R
 pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
 
 Variable Name | Type | Range in Dataset | Description
---- | --- | --- 
+--- | --- | --- | ---
 title | string | | song title
 artist | string | | artist name
 top genre | string | | most likely genre according to Spotify
