@@ -123,9 +123,13 @@ vif(fit.1)
 ```
 
 ```{r}
+# checking correlations between all the predictors to 
+# checking for instances of multicollinearity
 cor(df.1[,c(1:2, 4:10)])
 ```
 ```{r}
+# error plots for picking out outliers and seeing the 
+# 'fit' of the model & if normal probability plot holds
 par(mfrow = c(2, 2))
 plot(fit.1)
 ```
