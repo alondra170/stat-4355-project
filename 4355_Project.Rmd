@@ -202,9 +202,10 @@ Although there are some improvements in the R^2 values with the transformations,
 # log(nrgy)
 
 ```{r}
-fit.3 <- lm(log(nrgy)~., data = df.red.1)
+fit.3 <- lm(log(nrgy)~., data = df.red.1) #not knitting for me
 summary(fit.3)
 ```
+
 ```{r}
 par(mfrow = c(2, 2))
 plot(fit.3)
