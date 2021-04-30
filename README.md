@@ -7,6 +7,8 @@ Alondra Ramos | introduction of scientific question, future direction, report an
 Ajay Palankar | regression modeling (statistics heavy)
 Courtney Schaller | data visualization (figures and tables)
 
+Why did i take this class?
+
 ## dataset
 Rolling Stone's 500 best albums of all time on Spotify from the year 2020 (see the list here: https://www.rollingstone.com/music/music-lists/best-albums-of-all-time-1062063/) 
 This dataset has 15 classes and 6657 instances. The Spotify API has several features of every song on the platform. The dataset is available at https://github.com/alondra170/stat-4351-project/blob/main/Courtney's%20Spotify%20Top%20Songs%202020.
