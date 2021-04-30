@@ -6,27 +6,30 @@ output:
   html_document:
     df_print: paged
 ---
+```{r, packages}
+library(tidyverse)
+```
+###mwahahaha test
+kdfshjkfdskjhfshkjfsdkhjfsd
 
 ```{r}
 df <- read.csv("Top500.csv")
 ```
 
 # data cleaning
-```{r}
+```{r, data cleaning}
 summary(df)
 
-library(dplyr)
-
-# removing non-numeric attribtutes
-df.1 <- tbl_df(df)
-df.1 <- select(df.1, -c('ï..title', 'artist', 'top.genre', 'added', 'dur'))
+# removing non-numeric attributes
+df <- tbl_df(df)
+df <- select(df, -c('ï..title', 'artist', 'top.genre', 'added', 'dur'))
 ```
 ```{r}
 glimpse(df.1)
 ```
+
 # data exploration
-```{r}
-library(ggplot2)
+```{r, data exploration}
 
 ggplot(df.1, aes(nrgy)) +
   geom_histogram(col = "black", fill = "#009E73") +
