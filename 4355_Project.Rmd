@@ -123,13 +123,16 @@ vif(fit.1)
 ```
 
 ```{r}
-# checking correlations between all the predictors to 
-# checking for instances of multicollinearity
+# checking for multicollinearity issues
 cor(df.1[,c(1:2, 4:10)])
+
+# the results showed low correlation between the predictos and hence
+# a low chance of issues with multicollinearity
 ```
 ```{r}
-# error plots for picking out outliers and seeing the 
-# 'fit' of the model & if normal probability plot holds
+# the QQ plot falls well along the 45 degree line of the plot and indicates that the normal
+# distribution is conserved here. The residuals vs. fitted values show a bit of a funnel but 
+# for the most part result in a fairly straight line which indicates good fit
 par(mfrow = c(2, 2))
 plot(fit.1)
 ```
