@@ -7,6 +7,7 @@ output:
     df_print: paged
 ---
 ```{r, packages}
+library(cars)
 library(tidyverse)
 library(reshape2)
 ```
@@ -24,9 +25,7 @@ df$dur <- as.numeric(gsub(",","",df$dur))
 df <- as_tibble(df) %>% dplyr::select(-added)
 summary(df)
 glimpse(df)
-df %>% filter(bpm < 10)
 ```
-
 
 # data exploration
 ```{r, data exploration}
@@ -46,13 +45,16 @@ ggplot(dfmelty, aes_string(x = "value", y = var)) + geom_point(shape = ".") + fa
 lapply(numlabs, plots)
 ```
 
-
 # initial fitting
-
 ```{r}
-fit.1 <- lm(nrgy~., data = df.1)
+fit.1 <- lm(nrgy ~ year + bpm + dnce + dB + live + val + dur + acous + spch + pop, data = df)
 summary(fit.1)
+```
 
+# feature selection
+```{r}
+vif(fit.1)
+```
 ```
 
 # feature selection
