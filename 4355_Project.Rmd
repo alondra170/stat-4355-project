@@ -281,6 +281,8 @@ E(y|x) = 255.464416 - 0.080784(year) + 0.014874(bpm) - 0.195589(dnce) + 3.171702
 β9: the average decrease in song energy due to 1 unit increase in popularity of a track is
 0.036726 when all of the remaining regressor variables are held constant.
 
+Test the value of bpm
+
 H0: β1 = β2 = β3 = β4 = β5 = β6 = β7 = β8 = β9 = 0
 H1: not all βi (i = 1,2,3,4,5,6,7,8,9) are equal to 0.
 
