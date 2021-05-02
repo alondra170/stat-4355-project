@@ -224,5 +224,63 @@ wt <- 1 / lm(abs(fit.2$residuals) ~ fit.2$fitted.values)$fitted.values^2
 fit.wls <- lm(nrgy~., data = df.red.1, weights = wt)
 summary(fit.wls)
 ```
+```{r}
+anova(fit.1)
+```
+```{r}
+anova(fit.2)
+```
+
+
+
+```{r}
+anova(fit.4)
+```
+
+```{r}
+anova(fit.wls)
+```
+
+
+Fitted linear model for fit.wls 
+
+E(y|x) = 255.464416 - 0.080784(year) + 0.014874(bpm) - 0.195589(dnce) + 3.171702(dB) + 0.132080(live) + 0.185252(val) - 0.270047(acous) 
++ 0.127493(spch) - 0.036726(pop)
+
+σ^2 = 1.5876, R^2 = 0.7006, Adjusted R^2 = 0.7002
+
+β1: the average decrease in song energy due to 1 unit increase in year added is
+0.080784 when all of the remaining regressor variables are held constant.
+
+β2: the average increase in song energy due to 1 unit increase in beats per minute is
+0.014874 when all of the remaining regressor variables are held constant. 
+
+β3: the average decrease in song energy due to 1 unit increase in danceability is
+0.195589 when all of the remaining regressor variables are held constant.  
+
+β4: the average increase in song energy due to 1 unit increase in loudness of track in decibels is
+3.171702 when all of the remaining regressor variables are held constant.
+
+β5: the average increase in song energy due to 1 unit increase in presence of audience in the recording is
+0.132080 when all of the remaining regressor variables are held constant.
+
+β6: the average increase in song energy due to 1 unit increase in valence is
+0.185252 when all of the remaining regressor variables are held constant.
+
+β7: the average decrease in song energy due to 1 unit increase in confidence measure that a track is acoustic is
+0.270047 when all of the remaining regressor variables are held constant.
+
+β8: the average increase in song energy due to 1 unit increase in speechiness is
+0.127493 when all of the remaining regressor variables are held constant.
+
+β9: the average decrease in song energy due to 1 unit increase in popularity of a track is
+0.036726 when all of the remaining regressor variables are held constant.
+
+H0: β1 = β2 = β3 = β4 = β5 = β6 = β7 = β8 = β9 = 0
+H1: not all βi (i = 1,2,3,4,5,6,7,8,9) are equal to 0.
+
+T distribution with df = 6875
+
+T-test statistic: 2.779, p-value:0.005459, H0 can be rejected
 
 
