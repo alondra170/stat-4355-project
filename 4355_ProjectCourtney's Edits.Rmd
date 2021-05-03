@@ -1,0 +1,296 @@
+---
+title: "4355 Project"
+author: "Alondra Ramos"
+output:
+  word_document: default
+  html_document:
+    df_print: paged
+---
+```{r, packages}
+library(tidyverse)
+library(reshape2)
+library(car)
+library(kableExtra)
+```
+The album's title track is silent and listed as zero minutes and zero seconds long. (On Spotify, it is four seconds of silence.) For many years it was speculated that this cryptic track listing and the title of the album referred to a July 27, 1970 riot in Chicago, Illinois for which Sly & the Family Stone had been blamed. The band was to play a free show in Grant Park but the crowd became restless before the band began and started rioting. Over a hundred people were injured, including several police officers, and the reason given to the press was that the band was late and/or refused to perform.[31] The original LP jacket featured a photo collage with a picture of the band-shell in Grant Park overlaid with a photo of a police car. However, in 1997 Sly Stone said that the "There's a Riot Goin' On" track had no running time simply because "I felt there should be no riots."[32]
+
+# Data Cleaning
+```{r, data cleaning}
+df <- read.csv("https://raw.githubusercontent.com/alondra170/stat-4355-project/main/Top500.csv")
+#rename title
+colnames(df)[1] <- gsub('^...','',colnames(df)[1])
+#there are some duplicate rows, we need to remove them
+df <- df[!duplicated(df), ]
+df <- df %>% filter(bpm != 0)
+#change dur var from char to numeric
+df$dur <- as.numeric(gsub(",","",df$dur))
+#remove added column; useless
+df <- as_tibble(df) %>% dplyr::select(-added)
+summary(df)
+glimpse(df)
+```
+
+```{r}
+numlabs <- c("year", "bpm", "nrgy", "dnce", "dB", "live", "val", "dur", "acous", "spch", "pop")
+
+library(corrplot)
+M <- cor(df[numlabs])
+corrplot(M, method = "color", order = "FPC", type = "upper", addCoef.col = "black", diag = F)
+```
+
+
+# data exploration
+```{r, data exploration}
+ggplot(df, aes(x = nrgy)) +
+  geom_histogram(aes(y = stat(count / sum(count))), fill = "#009E73", bins = 100) +
+  labs(title="Song Energy Histogram", y="Frequency", x="Energy Level") + geom_density()
+
+hists <- function(x, n, y) {
+ggplot(df, aes(x = x)) + geom_histogram(aes(y = stat(count / sum(count))), fill = "#009E73", bins = n) + geom_vline(xintercept = mean(x)) + geom_text(aes(label = round(mean(x))), y = y, x = mean(x))
+}
+df$year <- as.numeric(df$year)
+
+hists(df$year, 20, 0.1) + labs(title="Year Released Histogram", y="Frequency", x="Year")
+hists(df$pop, 20, 0.04) + labs(title="Popularity Histogram", y="Frequency", x="Popularity")
+hists(df$pop, 20, 0.04) + labs(title="Acousticness Histogram", y="Frequency", x="Acousticness")
+df1 <- df %>% arrange(title, decreasing = TRUE) %>% dplyr::select(year:pop) %>% head()
+write.csv(df1, "Downloads")
+hists(df$bpm, 20, 0.1) + labs(title="Tempo Histogram", y="Frequency", x="Tempo (Beats Per Minute)")
+hists(df$nrgy, 50, 0.01) + labs(title="Energy Histogram", y="Frequency", x="Energy Level")
+
+hists(df$dB, 25, 0.01) + labs(title="Loudness Histogram", y="Frequency", x="Loudness Level (in Decibels)")
+hists(df$dnce, 25, 0.02) + labs(title="Danceability Histogram", y="Frequency", x="Danceability Level (in Decibels)")
+hists(df$live, 50, 0.02) + labs(title="Live Histogram", y="Frequency", x="Live Measure")
+hists(df$dur, 50, 0.02) + labs(title="Duration Histogram", y="Frequency", x="Duration (in Seconds)")
+hists(df$val, 50, 0.02) + labs(title="Happiness Histogram", y="Frequency", x="Happiness (or Valence)")
+hists(df$spch, 50, 0.02) + labs(title="Speechiness Histogram", y="Frequency", x="Speechiness")
+```
+
+```{r}
+
+
+plots <- function(var) {
+labs <- numlabs[which(numlabs != var)]
+dfmelty <- df %>% melt(measure.vars = labs, id.vars = var)
+ggplot(dfmelty, aes_string(x = "value", y = var)) + geom_point(shape = ".") + facet_wrap(~variable, scales="free") + geom_smooth(method = "lm") 
+}
+lapply(numlabs, plots)
+plots("nrgy") + labs(title = "Energy vs All Other Variables")
+```
+
+# initial fitting
+
+```{r}
+all <- regsubsets(nrgy ~ year + bpm + dnce + dB + live + val + dur + acous + spch + pop, data = df, nbest = 1, nvmax = 10)
+info <- summary(all)
+cbind(info$which, round(cbind(rsq=info$rsq, adjr2=info$adjr2, cp=info$cp, bic=info$bic, rss=info$rss), 3))
+```
+
+```{r}
+fit.1 <- lm(nrgy ~ year + bpm + dnce + dB + live + val + dur + acous + spch + pop, data = df)
+summary(fit.1)
+car::vif(fit.1)
+fit.15 <- lm(nrgy ~ year + dnce + dB + live + val + acous + spch + pop, data = df)
+summary(fit.15)
+fit.17 <- lm(nrgy ~ bpm + dB + live + val + dur + acous + spch, data = df)
+summary(fit.17)
+```
+```{r}
+dftransform <- df
+dftransform$live <- ifelse(df$live < 80, 0, 1)
+dftransform$acous <- ifelse(df$acous < 80, 0, 1)
+dftransform$spch <- ifelse(df$spch < 67, 0, 1)
+fit.2 <- lm(nrgy ~ year + bpm + dnce + dB + live + val + dur + acous + spch + pop, data = dftransform)
+summary(fit.2)
+vif(fit.2)
+
+plots2 <- function(var) {
+labs <- numlabs[which(numlabs != var)]
+dfmelty <- dftransform %>% melt(measure.vars = labs, id.vars = var)
+ggplot(dfmelty, aes_string(x = "value", y = var)) + geom_point(shape = ".") + facet_wrap(~variable, scales="free") + geom_smooth(method = "lm") 
+}
+plots2("nrgy") + labs(title = "Energy vs All Other Variables")
+```
+
+
+# feature selection
+```{r}
+vif(fit.1)
+```
+
+```{r}
+cor(df[numlabs[which(numlabs != "nrgy")]])
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.1)
+df %>% filter(index == 6482)
+```
+# residual analysis
+```{r}
+library(MASS)
+
+barplot(height = stdres(fit.1), names.arg = 1:6636,
+        main = "Standardized Residuals", xlab = "Index",
+        ylab = "Standardized Resid", ylim = c(-4, 4))
+
+# cutoff values
+abline(h = 3, col = "Red", lwd = 3)
+abline(h = -3, col = "Red", lwd = 3)
+
+df$standres <- stdres(fit.1)
+df$index <- 1:6636
+df %>% ggplot(aes(x = index, y = standres)) + geom_col() + geom_hline(yintercept=3, linetype="dashed", color = "red") + geom_hline(yintercept=-3, linetype="dashed", color = "red")
+```
+# studentized residuals
+```{r}
+barplot(height = studres(fit.1), names.arg = 1:6636,
+        main = "Studentized Residuals", xlab = "Index",
+        ylab = "Studentized Resid", ylim = c(-4,4))
+
+abline(h = 3, col = "Red", lwd = 3)
+abline(h = -3, col = "Red", lwd = 3)
+```
+# r student residuals
+```{r}
+barplot(height = rstudent(fit.1), names.arg = 1:6636,
+        main = "R Student Residuals", xlab = "Index",
+        ylab = "R Student Resid", ylim = c(-5, 5))
+
+cor.level <- 0.05/(2 * 6636)
+cor.qt <- qt(cor.level, 6636, lower.tail=F)
+
+abline(h = cor.qt, col = "Red", lwd = 3)
+abline(h = -cor.qt, col = "Red", lwd = 3)
+```
+## Influential Analysis
+```{r}
+myInf <- influence.measures(fit.1)
+summary(myInf)
+```
+
+```{r}
+library(car)
+dfbetasPlots(fit.1, intercept = F)
+```
+
+```{r}
+influenceIndexPlot(fit.1)
+```
+## Fittings with suspected outliers removed
+
+```{r}
+# removing suspected outliers
+df.red.1 <- df.1[-c(6671, 6685, 6686),]
+
+fit.2 <- lm(nrgy~., data = df.red.1)
+summary(fit.2)
+```
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.1)
+```
+##  Testing for heteroscedascity
+```{r}
+library(lmtest)
+bptest(fit.2)
+
+```
+
+
+## Testing Transformations
+
+Although there are some improvements in the R^2 values with the transformations, there seems to be a loss in the results for the residuals that indicate a slightly poorer fit.
+
+# log(nrgy)
+
+```{r}
+fit.3 <- lm(log(nrgy)~., data = df.red.1) #not knitting for me
+summary(fit.3)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.3)
+```
+# sqrt(nrgy)
+```{r}
+fit.4 <- lm(sqrt(nrgy)~., data = df.red.1)
+summary(fit.4)
+```
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.3)
+```
+```{r}
+wt <- 1 / lm(abs(fit.2$residuals) ~ fit.2$fitted.values)$fitted.values^2
+fit.wls <- lm(nrgy~., data = df.red.1, weights = wt)
+summary(fit.wls)
+```
+
+
+```{r}
+anova(fit.1)
+```
+
+
+```{r}
+anova(fit.2)
+```
+
+
+
+```{r}
+anova(fit.4)
+```
+
+```{r}
+anova(fit.wls)
+```
+
+
+Fitted linear model for fit.wls 
+
+E(y|x) = 255.464416 - 0.080784(year) + 0.014874(bpm) - 0.195589(dnce) + 3.171702(dB) + 0.132080(live) + 0.185252(val) - 0.270047(acous) 
++ 0.127493(spch) - 0.036726(pop)
+
+σ^2 = 1.5876, R^2 = 0.7006, Adjusted R^2 = 0.7002
+
+β1: the average decrease in song energy due to 1 unit increase in year added is
+0.080784 when all of the remaining regressor variables are held constant.
+
+β2: the average increase in song energy due to 1 unit increase in beats per minute is
+0.014874 when all of the remaining regressor variables are held constant. 
+
+β3: the average decrease in song energy due to 1 unit increase in danceability is
+0.195589 when all of the remaining regressor variables are held constant.  
+
+β4: the average increase in song energy due to 1 unit increase in loudness of track in decibels is
+3.171702 when all of the remaining regressor variables are held constant.
+
+β5: the average increase in song energy due to 1 unit increase in presence of audience in the recording is
+0.132080 when all of the remaining regressor variables are held constant.
+
+β6: the average increase in song energy due to 1 unit increase in valence is
+0.185252 when all of the remaining regressor variables are held constant.
+
+β7: the average decrease in song energy due to 1 unit increase in confidence measure that a track is acoustic is
+0.270047 when all of the remaining regressor variables are held constant.
+
+β8: the average increase in song energy due to 1 unit increase in speechiness is
+0.127493 when all of the remaining regressor variables are held constant.
+
+β9: the average decrease in song energy due to 1 unit increase in popularity of a track is
+0.036726 when all of the remaining regressor variables are held constant.
+
+Test the value of bpm
+
+H0: β1 = β2 = β3 = β4 = β5 = β6 = β7 = β8 = β9 = 0
+H1: not all βi (i = 1,2,3,4,5,6,7,8,9) are equal to 0.
+
+T distribution with df = 6875
+
+T-test statistic: 2.779, p-value:0.005459, H0 should be rejected
+
+
