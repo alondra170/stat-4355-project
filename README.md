@@ -18,7 +18,7 @@ For our project, we chose to analyze a Spotify dataset, specifically a list of R
 pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
 
 Variable Name | Name in Dataset | Type | Range in Dataset | Description
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 Title | title | string | | song title
 Year Added | year added | int | 1955-2019 | year released
 Tempo | bpm | int | 0-244 | Tempo of a track in beats per minute. A high tempo indicates a fast song, a low, a slow song.
