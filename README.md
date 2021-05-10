@@ -3,19 +3,19 @@
 The Applied Linear Modelers
 Team Member | Responsibility
 --- | ---
-Alondra Ramos | Introduction of scientific question, future direction, report and presentation organization
-Ajay Palankar | Regression modeling (statistics heavy)
-Courtney Schaller | Data visualization (figures and tables)
+Alondra Ramos | Regression modeling, residual analysis, and residual visualizations
+Ajay Palankar | Introduction of scientific question, future direction, report and presentation organization, some data visualizations
+Courtney Schaller | Variable selection, data visualization, model analysis
 
 ## dataset
 Rolling Stone's 500 best albums of all time on Spotify from the year 2020 (see the list here: https://www.rollingstone.com/music/music-lists/best-albums-of-all-time-1062063/) 
 This dataset has 15 classes and 6657 instances. The Spotify API has several features of every song on the platform. The dataset is available at https://github.com/alondra170/stat-4351-project/blob/main/Courtney's%20Spotify%20Top%20Songs%202020.
 
 ## data description
-For our project, we chose to analyze a Spotify dataset, specifically a list of Rolling Stone's 500 best albums of all time on Spotify from the year 2020. This dataset took all the songs from Rolling Stone's best albums list and compiled it into a big playlist, which could then be converted into a dataset available for study. In particular, the dataset involves an array of multiple numerical and categorical variables which help the user understand multiple components of each song. Such components include Spotify's algorithms' best estimates of whether the song was created in front of a live audience, how popular the song is, as well as a measure of the song's positivity in addition to many other factors. In regards to how the data is structured, the songs are categorized by song title, artist name, genre, pop (popularity), along with other variables. Most importantly, our group will focus on how the energy of a song is impacted due to variables such as the danceability, popularity, and acousticness variables. Moreoever, we chose to focus on the energy of a song as our goal of study because we believe studying popularity will allow for both audiences and artists to have a clear, objective understanding of what makes a song high- or low-energy. In addition, studying popularity will allow us to gain insight into clear, yet detailed understanding of the mathematical and statistical relationships between the variables of the Spotify dataset.
+For our project, we chose to analyze a dataset of Rolling Stone's 500 best albums of all time on Spotify from the year 2020. This dataset took all the songs from Rolling Stone's best albums list and compiled it into a big playlist. In particular, the dataset involves multiple numerical and categorical variables which help the user understand the components of each song. Such components include Spotify's algorithms' best estimates of whether a song was created in front of a live audience, how popular a song is, and a song's positivity. Most importantly, our group will focus on how the energy of a song is impacted due to variables such as the danceability, popularity, and acousticness variables. We chose to focus on the energy of a song as our goal of study because we believe studying energy will allow for both audiences and artists to have a clear, objective understanding of what makes a song high- or low-energy. In addition, studying popularity will allow us to gain insight into clear, yet detailed understanding of the mathematical and statistical relationships between the variables of the Spotify dataset.
 
 ### variable descriptions 
-pulled from https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
+confirmed with https://developer.spotify.com/documentation/web-api/reference/#endpoint-get-audio-features
 
 Variable Name | Name in Dataset | Type | Range in Dataset | Description
 --- | --- | --- | --- | ---
