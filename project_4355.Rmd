@@ -1,0 +1,175 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r, packages}
+library(car)
+library(tidyverse)
+library(reshape2)
+```
+
+# Data Cleaning
+```{r, data cleaning}
+df <- read.csv("https://raw.githubusercontent.com/alondra170/stat-4355-project/main/Top500.csv")
+#rename title
+colnames(df)[1] <- gsub('^...','',colnames(df)[1])
+#there are some duplicate rows, we need to remove them
+df <- df[!duplicated(df), ]
+#change dur var from char to numeric
+df$dur <- as.numeric(gsub(",","",df$dur))
+#remove added column; useless
+df <- as_tibble(df) %>% dplyr::select(-added)
+summary(df)
+glimpse(df)
+```
+
+# data exploration
+```{r, data exploration}
+ggplot(df, aes(x = nrgy)) +
+  geom_histogram(aes(y = stat(count / sum(count))), fill = "#009E73", bins = 100) +
+  labs(title="Song Energy Histogram", y="Frequency", x="Energy Level") + geom_density()
+```
+
+```{r}
+numlabs <- c("year", "bpm", "nrgy", "dnce", "dB", "live", "val", "dur", "acous", "spch", "pop")
+plots <- function(var) {
+labs <- numlabs[which(numlabs != var)]
+dfmelty <- df %>% melt(measure.vars = labs, id.vars = var)
+ggplot(dfmelty, aes_string(x = "value", y = var)) + geom_point(shape = ".") + facet_wrap(~variable, scales="free_x") + geom_smooth(method = lm)
+}
+lapply(numlabs, plots)
+```
+
+# initial fitting
+```{r}
+fit.1 <- lm(nrgy ~ year + bpm + dnce + dB + live + val + dur + acous + spch + pop, data = df)
+summary(fit.1)
+```
+
+# feature selection
+```{r}
+vif(fit.1)
+```
+# feature selection
+```{r}   
+library(car)
+vif(fit.1)
+```
+
+```{r} 
+cor(df[,c(1:2, 4:10)])
+```
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.1)
+```
+# residual analysis
+```{r}
+library(MASS)
+barplot(height = stdres(fit.1), names.arg = 1:6888,
+        main = "Standardized Residuals", xlab = "Index",
+        ylab = "Standardized Resid", ylim = c(-4, 4))
+# cutoff values
+abline(h = 3, col = "Red", lwd = 3)
+abline(h = -3, col = "Red", lwd = 3)
+```
+# studentized residuals
+```{r}
+barplot(height = studres(fit.1), names.arg = 1:6888,
+        main = "Studentized Residuals", xlab = "Index",
+        ylab = "Studentized Resid", ylim = c(-4,4))
+abline(h = 3, col = "Red", lwd = 3)
+abline(h = -3, col = "Red", lwd = 3)
+```
+# r student residuals
+```{r}
+barplot(height = rstudent(fit.1), names.arg = 1:6888,
+        main = "R Student Residuals", xlab = "Index",
+        ylab = "R Student Resid", ylim = c(-5, 5))
+cor.level <- 0.05/(2 * 6888)
+cor.qt <- qt(cor.level, 6878, lower.tail=F)
+abline(h = cor.qt, col = "Red", lwd = 3)
+abline(h = -cor.qt, col = "Red", lwd = 3)
+```
+## Influential Analysis
+```{r} 
+myInf <- influence.measures(fit.1)
+influential <- as.data.frame(myInf$is.inf)
+summary(myInf)
+```
+```{r}
+
+```
+
+
+# removing outliers 
+```{r}
+# all indexes that contain outliers
+index <- c()
+
+outlier.index <- for(i in 1:6657){
+  if(influential$dfb.1_[i] == TRUE | influential$dfb.year[i] == TRUE | influential$dfb.bpm[i] == TRUE |
+     influential$dfb.dnce[i] == TRUE | influential$dfb.dB[i] == TRUE | influential$dfb.live[i] == TRUE |
+     influential$dfb.val[i] == TRUE | influential$dfb.dur[i] == TRUE | influential$dfb.acos[i] == TRUE |
+     influential$dfb.spch[i] == TRUE | influential$dfb.pop[i] == TRUE | influential$dffit[i] == TRUE | 
+     influential$cov.r[i] == TRUE | influential$cook.d[i] == TRUE | influential$hat[i] == TRUE)
+    index <- c(index, i) 
+}
+```
+
+# model without outliers
+```{r}
+# haven' tested but should work. If not, check datatype of index is a vector
+df.1 <- df[-c(index),]
+fit.2 <- lm(nrgy~., data = df.1)
+summary(fit.2)
+
+```
+
+
+```{r}
+library(car)
+dfbetasPlots(fit.1, intercept = F)
+```
+```{r}
+influenceIndexPlot(fit.1)
+```
+
+
+##  Testing for heteroscedascity
+```{r}
+library(lmtest)
+bptest(fit.2)
+```
+
+
+## Testing Transformations
+
+Although there are some improvements in the R^2 values with the transformations, there seems to be a loss in the results for the residuals that indicate a slightly poorer fit.
+
+# log(nrgy)
+
+```{r}
+fit.3 <- lm(log(nrgy)~., data = df.red.1) #not knitting for me
+summary(fit.3)
+```
+
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.3)
+```
+# sqrt(nrgy)
+```{r}
+fit.4 <- lm(sqrt(nrgy)~., data = df.red.1)
+summary(fit.4)
+```
+```{r}
+par(mfrow = c(2, 2))
+plot(fit.3)
+```
+```{r}
+wt <- 1 / lm(abs(fit.2$residuals) ~ fit.2$fitted.values)$fitted.values^2
+fit.wls <- lm(nrgy~., data = df.red.1, weights = wt)
+summary(fit.wls)
+```
+
